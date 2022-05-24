@@ -1,0 +1,11 @@
+{
+	"name" : "sparrow",
+	"url" : "https://github.com/nevergarden/sparrow",
+	"license" : "MIT",
+    "description" : "A 2D Game Framework Inspired By Starling Framework",
+    "version" : "0.0.1",
+	"releasenote" : "",
+	"contributors" : ["nevergarden"],
+	"dependencies" : {},
+    "classPath": "src/"
+}

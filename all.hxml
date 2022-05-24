@@ -1,0 +1,5 @@
+-lib sparrow
+-lib hlsdl
+-hl bin/example/demo_quad.hl
+--class-path example
+--main demo_quad.Main
