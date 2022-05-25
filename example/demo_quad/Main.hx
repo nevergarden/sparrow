@@ -4,14 +4,15 @@ import sparrow.events.Event;
 import sparrow.core.Sparrow;
 
 class Main {
+    static var sparrow : Sparrow;
     static function main() {
-        var sparrow = new Sparrow("Draw Quad", 800,600);
+        sparrow = new Sparrow("Draw Quad", 200,600);
         sparrow.addEventListener(Event.QUIT, onQuit);
         sparrow.addEventListener(Event.ACTIVATE, onActivate);
         sparrow.addEventListener(Event.RENDER, onRender);
-        sparrow.start();
         // TODO: Adding listeners should work after main loop too
         // handle events on another thread
+        sparrow.start();
     }
 
     static function onActivate(e:Event) {

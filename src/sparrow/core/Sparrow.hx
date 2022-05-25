@@ -1,5 +1,7 @@
 package sparrow.core;
 
+import sparrow.prim.Color;
+import sparrow.rendering.Painter;
 import sparrow.events.Event;
 import sparrow.events.EventDispatcher;
 #if hlsdl
@@ -14,6 +16,7 @@ class Sparrow extends EventDispatcher {
     private var _frameID : UInt = 1;
     private var _started : Bool = false;
     private var _rendering : Bool = false;
+    private var _painter : Painter;
 
     public var isRunning : Bool = true;
     public var frameID(get, null) : UInt;
@@ -47,6 +50,7 @@ class Sparrow extends EventDispatcher {
     private function initialize() {
         #if hlsdl
         Sdl.init();
+        this._painter = new Painter();
         #end
 
         this.dispatchEventWith(Event.CONTEXT_CREATE);
@@ -63,10 +67,11 @@ class Sparrow extends EventDispatcher {
         }
     }
 
-    public function render() {
+    function render() {
         _frameID++;
-        this.dispatchEventWith(Event.RENDER, false, Timer.fps());
-        // Do the rendering
+        this.dispatchEventWith(Event.RENDER, false, frameID);
+        this._painter.clear();
+        window.present();
     }
 
     public dynamic function update(dt:Float) {}
@@ -79,4 +84,8 @@ class Sparrow extends EventDispatcher {
 	function get_frameID():UInt {
 		return _frameID;
 	}
+
+    public function set_renderer_clear_color(rgba:Color) {
+        this._painter.clearColor = rgba;
+    }
 }
