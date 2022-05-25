@@ -3,6 +3,14 @@ package sparrow.events;
 import haxe.ds.Vector;
 
 class Event {
+    public static final ACTIVATE:String = "activate";
+    public static final DEACTIVATE:String = "deactivate";
+
+    public static final RENDER:String = "render";
+
+    public static final CONTEXT_CREATE:String = "contextCreate";
+    public static final QUIT:String = "quit";
+
     private static var sEventPool:Vector<Event> = new Vector<Event>(0);
     private static var sEventPoolTop:Int = 0;
 
