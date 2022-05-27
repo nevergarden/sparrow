@@ -32,6 +32,8 @@ class Sparrow extends EventDispatcher {
 		switch (e.type) {
             case WindowState:
                 switch(e.state) {
+                    case Resize:
+                        this.dispatchEventWith(Event.RESIZE, false, {width: window.width, height: window.height});
                     case Focus:
                         this.dispatchEventWith(Event.ACTIVATE);
                     case Blur:
@@ -50,7 +52,7 @@ class Sparrow extends EventDispatcher {
     private function initialize() {
         #if hlsdl
         Sdl.init();
-        this._painter = new Painter();
+        this._painter = new Painter(this);
         #end
 
         this.dispatchEventWith(Event.CONTEXT_CREATE);
@@ -71,6 +73,7 @@ class Sparrow extends EventDispatcher {
         _frameID++;
         this.dispatchEventWith(Event.RENDER, false, frameID);
         this._painter.clear();
+        this._painter.present();
         window.present();
     }
 

@@ -7,5 +7,5 @@
 	"releasenote" : "",
 	"contributors" : ["nevergarden"],
 	"dependencies" : {},
-    "classPath": "src/"
+    "classPath": "src"
 }

@@ -1,3 +1,5 @@
+--define gl_ver_min=5
+--define gl_ver_maj=1
 -lib sparrow
 -lib hlsdl
 -hl bin/example/demo_quad.hl

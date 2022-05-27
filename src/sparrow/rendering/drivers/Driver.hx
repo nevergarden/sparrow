@@ -6,4 +6,5 @@ class Driver {
     public function setClearColor(rgba:Color) {}
     public function clear() {}
     public function present() {}
+    public function resize(width:Int, height:Int) {}
 }

@@ -7,6 +7,7 @@ class Event {
     public static final DEACTIVATE:String = "deactivate";
 
     public static final RENDER:String = "render";
+    public static final RESIZE:String = "resize";
 
     public static final CONTEXT_CREATE:String = "contextCreate";
     public static final QUIT:String = "quit";
