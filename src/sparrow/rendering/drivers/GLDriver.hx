@@ -7,7 +7,7 @@ import sdl.GL;
 
 class GLDriver extends Driver {
     var program :sparrow.rendering.Program;
-    var buf: Buffer;
+    var buf: FloatVertexArrayBuffer;
     public function new() {
         var meshEffect = new MeshEffect();
         program = meshEffect.createProgram();
@@ -19,9 +19,9 @@ class GLDriver extends Driver {
             0.5, 0.5,
             0.5, -0.5
         ];
-        var b = FloatBuffer.create();
-        b.pushFloatArray(f);
-        buf = b.toGLBuffer(Array);
+        buf = new FloatVertexArrayBuffer();
+        buf.pushFloatArray(f);
+        buf.toGLBuffer();
     }
 
     override function setClearColor(rgba:Color) {
@@ -41,12 +41,13 @@ class GLDriver extends Driver {
         
         program.activate();
         // TODO: add a function called uploadVertexBuffers and add this to that
-        GL.bindBuffer(GL.ARRAY_BUFFER, buf);
+        buf.bind();
         GL.vertexAttribPointer(0, 2, GL.FLOAT, false, 2*4, 0);
         GL.enableVertexAttribArray(0);
         // triangle_count * 6 (position_count * vertex_count) * 4 (float_size)
-        GL.drawArrays(GL.TRIANGLES, 0, 2*6*4);
+        buf.drawTriangles();
         GL.disableVertexAttribArray(0);
+        buf.unbind();
         program.deactivate();
 
     }
@@ -55,6 +56,8 @@ class GLDriver extends Driver {
         super.resize(width, height);
         GL.viewport(0,0,width,height);
     }
+
+    // public function uploadFloatVertexBuffer()
 }
 
 #else

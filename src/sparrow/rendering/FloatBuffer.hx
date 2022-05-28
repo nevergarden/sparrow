@@ -1,9 +1,5 @@
 package sparrow.rendering;
 
-import hl.Bytes;
-import glsparrow.BufferBindTarget;
-import sdl.GL;
-import hl.types.ArrayBytes.ArrayF32;
 import haxe.ds.Vector;
 
 class FloatBuffer {
@@ -37,15 +33,6 @@ class FloatBuffer {
     public function pushFloatArray(f:Array<Float>) {
         for(d in f)
             pushFloat(d);
-    }
-
-    public function toGLBuffer(target:BufferBindTarget) : Buffer {
-        var b = GL.createBuffer();
-        var cTarget = cast(target, Int);
-        GL.bindBuffer(cTarget, b);
-        GL.bufferData(cTarget, this.size*4, Bytes.getArray(_internal), GL.DYNAMIC_DRAW);
-        GL.bindBuffer(cTarget, cast(0, Buffer));
-        return b;
     }
 
     public function dispose() : Void {
