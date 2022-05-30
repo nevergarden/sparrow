@@ -7,21 +7,20 @@ import sdl.GL;
 
 class GLDriver extends Driver {
     var program :sparrow.rendering.Program;
-    var buf: FloatVertexArrayBuffer;
+    public static var buf: FloatVertexArrayBuffer;
     public function new() {
         var meshEffect = new MeshEffect();
         program = meshEffect.createProgram();
-        var f : Array<Float> = [
-            -0.5, 0.5,
-            -0.5, -0.5,
-            0.5, 0.5,
-            -0.5, -0.5,
-            0.5, 0.5,
-            0.5, -0.5
-        ];
-        buf = new FloatVertexArrayBuffer();
-        buf.pushFloatArray(f);
-        buf.toGLBuffer();
+        
+        buf = new FloatVertexArrayBuffer(7);
+
+        GL.enable(GL.CULL_FACE);
+        GL.cullFace(GL.BACK);
+        GL.enable(GL.BLEND);
+        GL.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
+
+        GL.enable(GL.DEPTH_TEST);
+        GL.depthMask(false); 
     }
 
     override function setClearColor(rgba:Color) {
@@ -33,7 +32,7 @@ class GLDriver extends Driver {
     override function clear() {
         super.clear();
         GL.colorMask(true, true, true, true);
-        GL.clear(GL.COLOR_BUFFER_BIT);
+        GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
     }
 
     override function present() {
@@ -42,11 +41,16 @@ class GLDriver extends Driver {
         program.activate();
         // TODO: add a function called uploadVertexBuffers and add this to that
         buf.bind();
-        GL.vertexAttribPointer(0, 2, GL.FLOAT, false, 2*4, 0);
+        // Position
+        GL.vertexAttribPointer(0, 3, GL.FLOAT, false, 7*4, 0);
         GL.enableVertexAttribArray(0);
+        // Color
+        GL.vertexAttribPointer(1, 4, GL.FLOAT, false, 7*4, 3*4);
+        GL.enableVertexAttribArray(1);
         // triangle_count * 6 (position_count * vertex_count) * 4 (float_size)
         buf.drawTriangles();
         GL.disableVertexAttribArray(0);
+        GL.disableVertexAttribArray(1);
         buf.unbind();
         program.deactivate();
 

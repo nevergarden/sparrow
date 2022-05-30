@@ -7,6 +7,7 @@ class FloatVertexArrayBuffer implements IVertexArrayBuffer {
     public var glBuf:Buffer;
     public var data:FloatBuffer;
     public var isFinal : Bool = false;
+    public var stride(default, null) : Int = 1;
 
 	public function get_count():UInt {
 		return this.count;
@@ -14,9 +15,10 @@ class FloatVertexArrayBuffer implements IVertexArrayBuffer {
 
 	public var count(get, null):UInt;
 
-    public function new() {
+    public function new(stride:Int) {
         glBuf = GL.createBuffer();
         data = FloatBuffer.create();
+        this.stride = stride;
     }
 
     public function pushFloat(f:Float) {
@@ -42,7 +44,19 @@ class FloatVertexArrayBuffer implements IVertexArrayBuffer {
     }
 
     public function drawTriangles() {
-        GL.drawArrays(GL.TRIANGLES, 0, this.count*byteSize);
+        GL.drawArrays(GL.TRIANGLES, 0, cast(this.count/this.stride, Int));
+    }
+
+    public function drawTriangleStrip() {
+        GL.drawArrays(GL.TRIANGLE_STRIP, 0, cast(this.count/this.stride, Int));
+    }
+
+    public function updateGPUMemory(offset:Int, data:Array<Float>) {
+        var d : FloatBuffer = FloatBuffer.create();
+        d.pushFloatArray(data);
+        this.bind();
+        GL.bufferSubData(GL.ARRAY_BUFFER, offset*byteSize, hl.Bytes.getArray(@:privateAccess d._internal), 0, data.length*byteSize);
+        this.unbind();
     }
 
 	public function toGLBuffer() {

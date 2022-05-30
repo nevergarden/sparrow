@@ -65,4 +65,11 @@ abstract Color(UInt) from UInt to UInt {
     function get_aNorm() : Float {
         return a/255;
     }
+
+    public static function random(?alpha:Bool=false) {
+        var col:Color = cast(Math.random()*0xffffff, UInt) << 8;
+        if(!alpha)
+            col |= 0xff;
+        return col;
+    }
 }
