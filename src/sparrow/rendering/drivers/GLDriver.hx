@@ -6,12 +6,9 @@ import sparrow.prim.Color;
 import sdl.GL;
 
 class GLDriver extends Driver {
-    var program :sparrow.rendering.Program;
     public static var buf: FloatVertexArrayBuffer;
-    public function new() {
-        var meshEffect = new MeshEffect();
-        program = meshEffect.createProgram();
-        
+    var meshEffect = new MeshEffect();
+    public function new() {        
         buf = new FloatVertexArrayBuffer(7);
 
         GL.enable(GL.CULL_FACE);
@@ -37,23 +34,15 @@ class GLDriver extends Driver {
 
     override function present() {
         super.present();
-        
-        program.activate();
+
+        meshEffect.getProgram().activate();
         // TODO: add a function called uploadVertexBuffers and add this to that
         buf.bind();
-        // Position
-        GL.vertexAttribPointer(0, 3, GL.FLOAT, false, 7*4, 0);
-        GL.enableVertexAttribArray(0);
-        // Color
-        GL.vertexAttribPointer(1, 4, GL.FLOAT, false, 7*4, 3*4);
-        GL.enableVertexAttribArray(1);
-        // triangle_count * 6 (position_count * vertex_count) * 4 (float_size)
+        meshEffect.pre_render();
         buf.drawTriangles();
-        GL.disableVertexAttribArray(0);
-        GL.disableVertexAttribArray(1);
+        meshEffect.post_render();
         buf.unbind();
-        program.deactivate();
-
+        meshEffect.getProgram().deactivate();
     }
 
     override function resize(width:Int, height:Int) {
