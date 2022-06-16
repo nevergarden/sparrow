@@ -8,7 +8,7 @@ import sparrow.prim.Color;
 class Painter {
 
     #if hlsdl
-    var driver : GLDriver;
+    public var driver : GLDriver;
     #end
 
     private var _clearColor : Color = 0x00;

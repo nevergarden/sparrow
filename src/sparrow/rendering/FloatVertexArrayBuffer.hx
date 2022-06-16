@@ -1,5 +1,6 @@
 package sparrow.rendering;
 
+import sparrow.rendering.IVertexArrayBuffer.VertexArrayDrawMode;
 import sdl.GL;
 
 class FloatVertexArrayBuffer implements IVertexArrayBuffer {
@@ -41,6 +42,15 @@ class FloatVertexArrayBuffer implements IVertexArrayBuffer {
 
     public function unbind() {
         GL.bindBuffer(GL.ARRAY_BUFFER, null);        
+    }
+
+    public function draw(type:VertexArrayDrawMode) : Void {
+        switch type {
+            case Triangles:
+                drawTriangles();
+            case TriangleStrip:
+                drawTriangleStrip();
+        }
     }
 
     public function drawTriangles() {

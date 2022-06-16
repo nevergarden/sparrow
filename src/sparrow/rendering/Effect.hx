@@ -2,6 +2,7 @@ package sparrow.rendering;
 
 class Effect {
     private static var _program : Program = null;
+    private var _buffer : IVertexArrayBuffer = null;
 
     public function getProgram() : Program {
         if(_program == null) {

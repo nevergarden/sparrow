@@ -6,16 +6,12 @@ import sparrow.prim.Color;
 import sdl.GL;
 
 class GLDriver extends Driver {
-    public static var buf: FloatVertexArrayBuffer;
-    var meshEffect = new MeshEffect();
-    public function new() {        
-        buf = new FloatVertexArrayBuffer(7);
-
+    var uploadedEffects : Array<Effect> = new Array<Effect>();
+    public function new() {
         GL.enable(GL.CULL_FACE);
         GL.cullFace(GL.BACK);
         GL.enable(GL.BLEND);
         GL.blendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
-
         GL.enable(GL.DEPTH_TEST);
         GL.depthMask(false); 
     }
@@ -34,15 +30,11 @@ class GLDriver extends Driver {
 
     override function present() {
         super.present();
-
-        meshEffect.getProgram().activate();
-        // TODO: add a function called uploadVertexBuffers and add this to that
-        buf.bind();
-        meshEffect.pre_render();
-        buf.drawTriangles();
-        meshEffect.post_render();
-        buf.unbind();
-        meshEffect.getProgram().deactivate();
+        for(effect in this.uploadedEffects) {
+            effect.pre_render();
+            effect.render();
+            effect.post_render();
+        }
     }
 
     override function resize(width:Int, height:Int) {
@@ -50,7 +42,10 @@ class GLDriver extends Driver {
         GL.viewport(0,0,width,height);
     }
 
-    // public function uploadFloatVertexBuffer()
+    override function uploadEffect(effect:Effect) {
+        super.uploadEffect(effect);
+        this.uploadedEffects.push(effect);
+    }
 }
 
 #else

@@ -10,13 +10,14 @@ import sdl.Window;
 #elseif hldx
 import dx.Window;
 #end
+var sparrow:Sparrow;
 var window:Window;
 
 class Sparrow extends EventDispatcher {
     private var _frameID : UInt = 1;
     private var _started : Bool = false;
     private var _rendering : Bool = false;
-    private var _painter : Painter;
+    public var _painter : Painter;
 
     public var isRunning : Bool = true;
     public var frameID(get, null) : UInt;
@@ -53,6 +54,7 @@ class Sparrow extends EventDispatcher {
         #if hlsdl
         Sdl.init();
         this._painter = new Painter(this);
+        sparrow = this;
         #end
 
         this.dispatchEventWith(Event.CONTEXT_CREATE);

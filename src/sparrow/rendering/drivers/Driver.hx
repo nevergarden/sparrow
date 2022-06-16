@@ -7,4 +7,5 @@ class Driver {
     public function clear() {}
     public function present() {}
     public function resize(width:Int, height:Int) {}
+    public function uploadEffect(effect:Effect) {}
 }
